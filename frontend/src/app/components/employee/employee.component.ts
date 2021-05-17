@@ -33,10 +33,21 @@ export class EmployeeComponent implements OnInit {
       resp => {
         console.log(resp);
         this.getEmployees();
+        form.reset();
       },
       e => console.log(e)
     )
 
+  }
+
+  updateEmployee() {
+    
+  }
+
+  deleteEmployee() {
+    if (confirm("Are you sure you want to delete it?")) {
+
+    }
   }
 
 

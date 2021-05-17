@@ -7,6 +7,7 @@ import { Employee } from '../models/Employee'
 })
 export class EmployeeService {
 
+  // only in debug mode:
   URL_API = "http://localhost:5000/api/employees"
 
   constructor(private http: HttpClient) { }
