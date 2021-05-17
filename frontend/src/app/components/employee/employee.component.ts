@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../../models/Employee'
 import { NgForm } from '@angular/forms'
+import { formatCurrency } from '@angular/common';
 
 @Component({
   selector: 'app-employee',
@@ -10,8 +11,8 @@ import { NgForm } from '@angular/forms'
 })
 export class EmployeeComponent implements OnInit {
   allEmployees: Employee[];
-  selectedEmployee: Employee = {
-    name: "", office: "", position: ""
+  selectedEmployee: any = {
+    name: "", office: "", position: "", _id: ""
   }
 
   constructor(private employeeService: EmployeeService) { }
@@ -27,26 +28,53 @@ export class EmployeeComponent implements OnInit {
     )
   }
 
-  addEmployee(form: NgForm) {
-    console.log(form.value)
-    this.employeeService.createEmployee(form.value).subscribe(
-      resp => {
-        console.log(resp);
-        this.getEmployees();
-        form.reset();
-      },
-      e => console.log(e)
-    )
+  // edit button (in table)
+  editEmployee(employee: Employee) {
+    this.selectedEmployee = employee;
+    console.log(this.selectedEmployee);
+  }
+  
+  addEmployee(form?: NgForm) {
+    console.log("Id:", form.value._id)
 
+    if (form.value._id) {
+      // updated
+      this.employeeService.updatedEmployee(this.selectedEmployee).subscribe(
+        resp => {
+          alert("Employeed deleted"!)
+          this.getEmployees()      
+        },
+        e => {
+          console.log(e)
+          alert("Error")
+        }
+      )
+      form.reset();
+
+    } else {
+      // add employee
+      this.employeeService.createEmployee(form.value).subscribe(
+        resp => {
+          console.log(resp);
+          this.getEmployees();
+          form.reset();
+        },
+        e => console.log(e)
+      )
+    }
   }
 
-  updateEmployee() {
-    
-  }
-
-  deleteEmployee() {
+  // delete btn (in table)
+  deleteEmployee(id: string) {
     if (confirm("Are you sure you want to delete it?")) {
-
+      this.employeeService.deleteEmployee(id).subscribe(
+        resp => {
+          console.log(resp)
+          alert("Employeed deleted"!)
+          this.getEmployees()         
+        },
+        e => console.log(e)
+      )
     }
   }
 

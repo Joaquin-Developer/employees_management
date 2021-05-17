@@ -13,11 +13,18 @@ export class EmployeeService {
   constructor(private http: HttpClient) { }
 
   getEmployees(): any {
-    return this.http.get<Employee[]>(this.URL_API + "/get_all");
+    return this.http.get<Employee[]>(`${this.URL_API}/get_all`);
   }
 
   createEmployee(employee: Employee) {
-    return this.http.post((this.URL_API + "/insert"), employee);
+    return this.http.post(`${this.URL_API}/insert`, employee);
   }
 
+  updatedEmployee(employee: Employee) {
+    return this.http.put(`${this.URL_API}/update/${employee._id}`, employee);
+  }
+
+  deleteEmployee(id: string) {
+    return this.http.delete(`${this.URL_API}/delete/${id}`)
+  }
 }
