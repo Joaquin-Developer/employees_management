@@ -4,7 +4,8 @@ const app = express()
 // settings:
 app.set("port", process.env.PORT || 5000)
 
-app.use(express.json())
+app.use(express.json()) // read json
+app.use(express.urlencoded({ extended: false }))    // read html forms
 
 // routes:
 app.use("/api/employees", require("./routes/employees.routes"))

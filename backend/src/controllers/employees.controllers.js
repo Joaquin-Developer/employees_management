@@ -6,21 +6,26 @@ employeesController.getEmployees = async (req, res) => {
     res.json(allEmployees)
 }
 
-employeesController.getEmployee = (req, res) => {
-    res.send("get 1 employee")
+employeesController.getEmployee = async (req, res) => {
+    const employeeFound = await Employee.findOne({ _id: req.params.id })
+    res.json(employeeFound)
 }
 
-employeesController.createEmployee = (req, res) => {
-    const data = req.body
-    console.log(data)
+employeesController.createEmployee = async (req, res) => {
+    const newEmployee = new Employee(req.body)
+    console.log(newEmployee)
+    await newEmployee.save()
+    res.json({ status: true, message: "Employee created" })
 }
 
-employeesController.updateEmployee = (req, res) => {
-
+employeesController.updateEmployee = async (req, res) => {
+    await Employee.findByIdAndUpdate(req.params.id, req.body)
+    res.json({ status: true, message: "Employee updated!" })
 }
 
-employeesController.deleteEmployee = (req, res) => {
-
+employeesController.deleteEmployee = async (req, res) => {
+    const deletedEmployeed = await Employee.findByIdAndDelete(req.params.id)
+    res.json({ status: true, message: "eliminado correctamente", employedDeleted: deletedEmployeed })
 }
 
 module.exports = employeesController
