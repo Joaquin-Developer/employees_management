@@ -8,7 +8,8 @@ const url = ` mongodb://${config.user}:${config.pass}@${config.host}:${config.po
 mongoose
     .connect(url, {
         useUnifiedTopology: true,
-        useNewUrlParser: true
+        useNewUrlParser: true,
+        useFindAndModify: false
     })
     .then(db => console.log("MongoDB Connected!"))
     .catch(error => console.log("Error:", error.toString()))
